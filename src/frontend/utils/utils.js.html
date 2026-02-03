@@ -1,0 +1,20 @@
+<script>
+  // --- Function to populate dropdown ---
+  function populateDropdown($dropdown, items, message = 'Option') {
+    if (items && items.length > 0) {
+      $dropdown.disabled = false;
+      $dropdown.innerHTML = `<option selected disabled value="">-- Select ${message} --</option>`;
+
+      items.forEach((item) => {
+        const option = document.createElement('option');
+        option.value = item;
+        option.textContent = item;
+        $dropdown.appendChild(option);
+      });
+    } else {
+      $dropdown.innerHTML =
+        '<option selected disabled value="">No data found</option>';
+      $dropdown.disabled = false;
+    }
+  }
+</script>

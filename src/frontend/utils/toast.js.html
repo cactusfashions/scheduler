@@ -1,0 +1,43 @@
+<script>
+  function showToast(message, type = 'success') {
+    const $toastContainer = $('.toast-container');
+    const $toast = $(`
+    <div class="toast align-items-center text-white bg-${type === 'success' ? 'success' : 'danger'} border-0" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="position-relative">
+        <button type="button" class="btn-close top-0 end-0 position-absolute me-2 mt-2 btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+        <div class="toast-body">
+          <div>${message}</div>
+        </div>
+      </div>
+    </div>
+  `);
+
+    $toastContainer.append($toast);
+
+    const bsToast = new bootstrap.Toast($toast[0]);
+    bsToast.show();
+
+    $toast.on('hidden.bs.toast', () => {
+      $toast.remove();
+    });
+  }
+
+  function showSpinner(status = 'Submitting...') {
+    $('.spinner-overlay').addClass('d-flex');
+    $('.spinner-text').text(status);
+    removeScrollBar();
+  }
+
+  function hideSpinner() {
+    $('.spinner-overlay').removeClass('d-flex');
+    restoreScrollBar();
+  }
+
+  function removeScrollBar() {
+    $('body').css('overflow', 'hidden');
+  }
+
+  function restoreScrollBar() {
+    $('body').css('overflow', '');
+  }
+</script>

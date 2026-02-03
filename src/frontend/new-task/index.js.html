@@ -1,0 +1,101 @@
+<script>
+  // Dropdown elements
+  const $category = document.getElementById('category');
+  const $priority = document.getElementById('priority');
+  const $task = document.getElementById('task');
+  const $dueDate = document.getElementById('dueDate');
+  const $decision = document.getElementById('decision');
+  const $delegateTo = document.getElementById('delegateTo');
+  const $newTaskForm = document.getElementById('newTaskForm');
+
+  // Initialize the page
+  document.addEventListener('DOMContentLoaded', async () => {
+    try {
+      const { categories, priorities, decisions, delegateTo } =
+        await getDropdownData();
+      console.log(categories, priorities, decisions, delegateTo);
+
+      populateDropdown($category, categories, 'Category');
+      populateDropdown($priority, priorities, 'Priority');
+      populateDropdown($decision, decisions, 'Decision');
+      populateDropdown($delegateTo, delegateTo, 'Delegate To');
+
+      setupEventListeners();
+    } catch (err) {
+      showToast('Error loading data', 'error');
+    }
+  });
+
+  function setupEventListeners() {
+    // Form submission
+    $newTaskForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      handleSubmit();
+    });
+  }
+
+  // Get dropdown data
+  async function getDropdownData() {
+    showSpinner('Loading data...');
+    return new Promise((resolve, reject) => {
+      google.script.run
+        .withSuccessHandler((data) => {
+          // console.log(data);
+          hideSpinner();
+          resolve(data);
+        })
+        .withFailureHandler((error) => {
+          console.error('Error getting dropdown data:', error);
+          hideSpinner();
+          reject(error);
+        })
+        .getDropdownData();
+    });
+  }
+
+  // Handle form submission
+  async function handleSubmit() {
+    // Validate all required fields
+    if (!$category.value) {
+      showToast('Please select Category', 'error');
+      return;
+    }
+
+    if (!$priority.value) {
+      showToast('Please select Priority', 'error');
+      return;
+    }
+
+    if (!$task.value) {
+      showToast('Please enter Task', 'error');
+      return;
+    }
+
+    showSpinner('Adding task...');
+    google.script.run
+      .withSuccessHandler(() => {
+        showToast('Task added successfully', 'success');
+        $category.selectedIndex = 0;
+        $priority.selectedIndex = 0;
+        $task.value = '';
+        $dueDate.value = '';
+        $decision.selectedIndex = 0;
+        $delegateTo.selectedIndex = 0;
+
+        hideSpinner();
+      })
+      .withFailureHandler((error) => {
+        hideSpinner();
+        console.error('Error adding task:', error);
+        showToast('Error adding task: ' + error.message, 'error');
+      })
+      .addNewTask({
+        category: $category.value,
+        priority: $priority.value,
+        task: $task.value,
+        dueDate: $dueDate.value,
+        decision: $decision.value,
+        delegateTo: $delegateTo.value
+      });
+  }
+</script>

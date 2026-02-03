@@ -1,0 +1,12 @@
+node_modules/
+scripts/
+.vscode/
+.git/
+.prettierrc
+.prettierignore
+package.json
+package-lock.json
+README.md
+tsconfig.json
+.clasp.json
+backend/constants/development.js
