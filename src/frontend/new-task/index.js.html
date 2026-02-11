@@ -70,6 +70,7 @@
       showToast('Please enter Task', 'error');
       return;
     }
+    console.log($delegateTo.value);
 
     showSpinner('Adding task...');
     google.script.run

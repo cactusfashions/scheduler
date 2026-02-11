@@ -14,9 +14,7 @@ function getDropdownData() {
           : null
       )
       .filter(Boolean);
-    const delegateTo = data
-      .map((row) => row['delegate to'].split('-')[0])
-      .filter(Boolean);
+    const delegateTo = data.map((row) => row['delegate to']).filter(Boolean);
     return { categories, priorities, decisions, delegateTo };
   } catch (e) {
     console.log(e.message);

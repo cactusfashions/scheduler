@@ -1,6 +1,8 @@
 <script>
   // --- Function to populate dropdown ---
   function populateDropdown($dropdown, items, message = 'Option') {
+    const isDelegate = message === 'Delegate To';
+
     if (items && items.length > 0) {
       $dropdown.disabled = false;
       $dropdown.innerHTML = `<option selected disabled value="">-- Select ${message} --</option>`;
@@ -8,7 +10,7 @@
       items.forEach((item) => {
         const option = document.createElement('option');
         option.value = item;
-        option.textContent = item;
+        option.textContent = isDelegate ? item.split('-')[0] : item;
         $dropdown.appendChild(option);
       });
     } else {
