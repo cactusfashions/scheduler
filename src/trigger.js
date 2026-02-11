@@ -30,35 +30,25 @@ function onEdit(e) {
   if (col === decisionCol) {
     const decisionValue = range.getValue();
     if (decisionValue) {
-      if (
-        decisionValue.toString().trim().toLowerCase() === 'delete' &&
-        openDeleteDialog()
-      ) {
+      if (decisionValue.toString().trim().toLowerCase() === 'delete') {
         sheet.deleteRow(row);
+        return; // Exit early - row deleted
       } else {
         targetSheetName = decisionValue;
       }
     }
   }
-  /* ---------- CASE 2: Status → Complete or Done ---------- */
+  /* ---------- CASE 2: Status → Done ---------- */
   if (col === statusCol) {
     const statusValue = String(range.getValue()).trim().toLowerCase();
     if (statusValue === 'done') {
       // Check if we're already in the Completed sheet
-      if (sheet.getName() === 'Completed') {
-        // In Completed sheet, just show standard dialog and delete if confirmed
-        if (openDeleteDialog()) {
-          sheet.deleteRow(row);
-        }
-        return; // Exit early - no need to move rows
+      if (sheet.getName() !== 'Completed') {
+        targetSheetName = 'Completed';
       } else {
-        // In other sheets, show dialog and either move to Completed or delete
-        if (!openDeleteDialog(true)) {
-          targetSheetName = 'Completed';
-        } else {
-          sheet.deleteRow(row);
-          return; // Exit early - row deleted
-        }
+        // Already in Completed sheet, just delete the row
+        sheet.deleteRow(row);
+        return; // Exit early - row deleted
       }
     }
   }
@@ -93,20 +83,4 @@ function onEdit(e) {
   });
   targetSheet.appendRow(targetRowData);
   sheet.deleteRow(row);
-}
-
-// Open dialog to confirm deletion
-function openDeleteDialog(completed = false) {
-  const ui = SpreadsheetApp.getUi();
-  const result = ui.alert(
-    'Delete Task',
-    completed
-      ? 'Are you sure you want to delete? By clicking No you can keep it as completed'
-      : 'Are you sure you want to delete this task?',
-    ui.ButtonSet.YES_NO
-  );
-  if (result === ui.Button.NO) {
-    return;
-  }
-  return true;
 }
