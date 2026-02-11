@@ -13,23 +13,39 @@ function addNewTask(data) {
     if (!category || !task) {
       throw new Error('All fields are required');
     }
+    const skipDecisionColumn = ['do now', 'schedule', 'someday', 'delegate'];
 
-    const sheet = new SheetManager(SCHEDULER_SS_ID, ALL_TASKS_SHEET);
+    const sheetName = {
+      alltask: ALL_TASKS_SHEET,
+      'do now': DO_NOW_SHEET,
+      schedule: SCHEDULE_SHEET,
+      someday: SOME_DAY_SHEET,
+      delegate: DELEGATE_SHEET
+    };
+
+    const sheet = new SheetManager(
+      SCHEDULER_SS_ID,
+      sheetName[decision.toLowerCase() || 'alltask']
+    );
     const timestamp = new Date();
-    const rowData = [
-      {
-        id: getNewId(),
-        timestamp: timestamp,
-        category,
-        task,
-        priority,
-        'due date': dueDate,
-        decision,
-        'delegate to': delegateTo
+    const rowData = {
+      timestamp: timestamp,
+      category,
+      task,
+      priority,
+      'due date': dueDate,
+      decision,
+      'delegate to': delegateTo,
+      status: ''
+    };
+    if (skipDecisionColumn.includes(decision.toLowerCase())) {
+      delete rowData.decision;
+      if (decision.toLowerCase() !== 'delegate') {
+        delete rowData['delegate to'];
       }
-    ];
+    }
 
-    sheet.appendRowData(rowData);
+    sheet.appendRowData([rowData]);
     return new ScriptResponse(200, 'Task created successfully.');
   } catch (error) {
     console.log(error);

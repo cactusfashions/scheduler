@@ -9,4 +9,4 @@ package-lock.json
 README.md
 tsconfig.json
 .clasp.json
-backend/constants/development.js
+backend/constants/production.js

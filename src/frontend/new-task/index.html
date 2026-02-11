@@ -1,10 +1,13 @@
 <!doctype html>
+
 <html lang="en">
   <!-- Include LoaderAndToast -->
+
   <?!= include('frontend/partials/head.html'); ?>
 
   <body>
     <!-- Include LoaderAndToast -->
+
     <?!= include('frontend/utils/loaderAndToast.html'); ?>
 
     <div class="container py-2">
@@ -12,6 +15,7 @@
         class="text-center gap-4 d-flex align-items-center justify-content-between mb-4"
       >
         <?!= include('frontend/partials/logo.html'); ?>
+
         <p
           class="mb-0 p-2 bg-primary text-white rounded-3 w-auto text-uppercase"
         >
@@ -21,23 +25,28 @@
 
       <form id="newTaskForm">
         <!-- Task Details Section -->
-        <div class="section-card">
+
+        <div class="section-card mb-4">
           <h5 class="section-title">
             <i class="fas fa-file-invoice me-2"></i>New Task
           </h5>
 
           <!-- Row 1: Category and priority -->
-          <div class="row mb">
-            <div class="col-md-6 col-12 mt-2">
+
+          <div class="row mb-4">
+            <div class="col-md-6 col-12">
               <label for="category" class="form-label">Category</label>
+
               <select class="form-select" id="category" required>
                 <option selected disabled value="">
                   -- Select Category --
                 </option>
               </select>
             </div>
-            <div class="col-md-6 col-12 mt-2">
+
+            <div class="col-md-6 col-12">
               <label for="priority" class="form-label">Priority</label>
+
               <select class="form-select" id="priority">
                 <option selected disabled value="">
                   -- Select Priority --
@@ -47,35 +56,43 @@
           </div>
 
           <!-- Row 2: task due date -->
+
           <div class="row mb-4">
-            <div class="col-md-6 col-12 mt-2">
+            <div class="col-md-6 col-12">
               <label for="dueDate" class="form-label">Task Due Date</label>
+
               <input type="date" class="form-control" id="dueDate" />
             </div>
-            <div class="col-md-6 col-12 mt-2">
+
+            <div class="col-md-6 col-12">
               <label for="task" class="form-label">Task</label>
+
               <textarea
                 name="task"
                 id="task"
                 class="form-control"
-                rows="2"
+                rows="3"
                 required
               ></textarea>
             </div>
           </div>
 
           <!-- Row 3: decision and delegate to -->
-          <div class="row">
-            <div class="col-md-6 col-12 mt-3">
+
+          <div class="row mb-4">
+            <div class="col-md-6 col-12">
               <label for="decision" class="form-label">Decision</label>
+
               <select class="form-select" id="decision">
                 <option selected disabled value="">
                   -- Select Decision --
                 </option>
               </select>
             </div>
-            <div class="col-md-6 col-12 mt-3">
+
+            <div class="col-md-6 col-12">
               <label for="delegateTo" class="form-label">Delegate To</label>
+
               <select class="form-select" id="delegateTo">
                 <option selected disabled value="">
                   -- Select Delegate To --
@@ -85,7 +102,7 @@
           </div>
         </div>
 
-        <div class="text-center mt-4">
+        <div class="text-center mb-4">
           <button type="submit" id="submitBtn" class="btn btn-outline-success">
             <i class="fas fa-save me-2"></i>Submit
           </button>
@@ -94,12 +111,19 @@
     </div>
 
     <!-- Bootstrap 5 JS Bundle with Popper -->
+
     <?!= include('frontend/utils/bootstrap.js'); ?>
+
     <!-- Custom toast module -->
+
     <?!= include('frontend/utils/toast.js'); ?>
+
     <!-- Custom utils module -->
+
     <?!= include('frontend/utils/utils.js'); ?>
+
     <!-- Custom JS -->
+
     <?!= include('frontend/new-task/index.js'); ?>
   </body>
 </html>
